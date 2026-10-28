@@ -1,0 +1,9 @@
+const vehicles=[['차량 #1','원주시',85,'대기'],['차량 #2','횡성군',92,'충전중'],['차량 #3','강릉시',67,'이동중'],['차량 #4','춘천시',78,'대기']];
+const reports=[['월간 에너지 리포트','2026-10 · 2.5MB'],['RE100 달성 보고서','2026-10 · 1.8MB'],['탄소배출 인벤토리','2026-10 · 3.2MB']];
+const labels={prediction:'AI 예측',ess:'ESS 제어',dr:'수요반응',trading:'전력중개',re100:'RE100',carbon:'탄소배출',reports:'리포트'};
+document.querySelector('#updatedAt').textContent=new Intl.DateTimeFormat('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date());
+document.querySelector('#generationBars').innerHTML=[22,36,48,63,78,91,84,96,88,72,51,28].map((h,i)=>`<i style="height:${h}%" title="${i+6}시 ${Math.round(h*15)}kW"></i>`).join('');
+document.querySelector('#vehicleList').innerHTML=vehicles.map(([name,place,battery,status])=>`<div class="vehicle"><span class="vehicle-icon">▣</span><div><strong>${name}</strong><p>⌖ ${place}</p></div><div class="battery"><span><i style="width:${battery}%"></i></span><small>${battery}%</small></div><em class="status ${status}">${status}</em></div>`).join('');
+document.querySelector('#reportList').innerHTML=reports.map(([name,meta])=>`<div class="report"><span>▤</span><div><strong>${name}</strong><p>${meta}</p></div><button aria-label="${name} 다운로드">↓</button></div>`).join('');
+function selectTab(id){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelector('#overview').classList.toggle('active',id==='overview');document.querySelector('#detail').classList.toggle('active',id!=='overview');if(id!=='overview')document.querySelector('#detailTitle').textContent=labels[id]}
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));document.querySelector('[data-back]').addEventListener('click',()=>selectTab('overview'));
